@@ -37,16 +37,12 @@ try:
     if side_bar == 'Image Picker':
         st.title('Pick a Image')
         img_name = st.file_uploader('Select Image')
-        test_dir = (os.path.dirname(os.path.realpath(__file__)))+'/test_img'
-        if img_name.name in (os.listdir(test_dir)):
-            # if img_name in
+        try:
             st.image(f'test_img/{img_name.name}')
             img_ = imread(f'test_img/{img_name.name}')
-        else:
-            test_dir = (os.path.dirname(os.path.realpath(__file__))
-                        )+'/test_img/test_img'
-            st.image(f'test_img/{img_name.name}')
-            img_ = imread(f'test_img/{img_name.name}')
+        except:
+            st.image(f'test_img/test_img/{img_name.name}')
+            img_ = imread(f'test_img/test_img/{img_name.name}')
         # Predict Button
         if st.button('Predict Class'):
             try:
