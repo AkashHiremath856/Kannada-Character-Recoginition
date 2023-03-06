@@ -5,6 +5,7 @@ from skimage.transform import resize
 import pickle
 from streamlit_drawable_canvas import st_canvas
 import webbrowser as wb
+import os
 
 model1 = pickle.load(open('Models/KCR(LR).pkl', 'rb'))  # LogisticRegression
 model2 = pickle.load(open('Models/KCR(RF).pkl', 'rb'))  # RandomForest
@@ -36,8 +37,16 @@ try:
     if side_bar == 'Image Picker':
         st.title('Pick a Image')
         img_name = st.file_uploader('Select Image')
-        st.image(f'img/{img_name.name}')
-        img_ = imread(f'img/{img_name.name}')
+        test_dir = (os.path.dirname(os.path.realpath(__file__)))+'/test_img'
+        if img_name.name in (os.listdir(test_dir)):
+            # if img_name in
+            st.image(f'test_img/{img_name.name}')
+            img_ = imread(f'test_img/{img_name.name}')
+        else:
+            test_dir = (os.path.dirname(os.path.realpath(__file__))
+                        )+'/test_img/test_img'
+            st.image(f'test_img/{img_name.name}')
+            img_ = imread(f'test_img/{img_name.name}')
         # Predict Button
         if st.button('Predict Class'):
             try:
@@ -56,6 +65,7 @@ except:
 if side_bar == 'Canvas(Beta)':
     #   Canvas
     with st.form('Canvas'):
+        st.text('Note : Test Release Version')
         canvas_result = st_canvas(background_color='white',
                                   width=400, height=200, stroke_width=15)
 
@@ -78,24 +88,24 @@ if side_bar == 'About':
         st.title('About Project')
 
         st.text('''
-        Kannada OCR (Optical Character Recognition) with ML (Machine Learning) 
-        classification algorithm involves training a machine learning model to recognize 
+        Kannada OCR (Optical Character Recognition) with ML (Machine Learning)
+        classification algorithm involves training a machine learning model to recognize
         and classify Kannada characters from scanned or digital images.OCR technology
-        has become increasingly important in recent years due to the growth of 
-        digitization and the need to process large volumes of documents quickly and 
+        has become increasingly important in recent years due to the growth of
+        digitization and the need to process large volumes of documents quickly and
         accurately.OCR technology is used in a variety of applications, including data
-        entry, document archiving, and information retrieval.Kannada OCR with ML 
-        classification algorithm is especially important for preserving and digitizing 
-        Kannada literature and documents.Kannada is a Dravidian language spoken 
-        predominantly in the Indian state of Karnataka.Kannada literature is rich and 
-        diverse, with a history that spans over a thousand years.However, much of this 
-        literature remains in print form and is not easily accessible to the wider 
-        public.OCR technology can help to digitize these documents, making them more 
-        easily accessible to scholars and researchers.ML classification algorithms are 
-        used to classify Kannada characters based on their visual features. These 
-        algorithms learn from a set of training data, and then use this knowledge to 
-        classify new data. Some popular ML classification algorithms for OCR include 
-        Support Vector Machines (SVM), Random Forests, and Convolutional Neural 
+        entry, document archiving, and information retrieval.Kannada OCR with ML
+        classification algorithm is especially important for preserving and digitizing
+        Kannada literature and documents.Kannada is a Dravidian language spoken
+        predominantly in the Indian state of Karnataka.Kannada literature is rich and
+        diverse, with a history that spans over a thousand years.However, much of this
+        literature remains in print form and is not easily accessible to the wider
+        public.OCR technology can help to digitize these documents, making them more
+        easily accessible to scholars and researchers.ML classification algorithms are
+        used to classify Kannada characters based on their visual features. These
+        algorithms learn from a set of training data, and then use this knowledge to
+        classify new data. Some popular ML classification algorithms for OCR include
+        Support Vector Machines (SVM), Random Forests, and Convolutional Neural
         Networks (CNN).
                 ''')
 
