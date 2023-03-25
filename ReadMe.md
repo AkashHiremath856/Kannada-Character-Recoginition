@@ -3,9 +3,9 @@
 https://www.kaggle.com/datasets/dhruvildave/kannada-characters
 
 
-<img src="https://github.com/AkashHiremath856/Kannada-Character-Recoginition/blob/main/Samples/photo_6060121455506601960_w.jpg">
-<img src="https://github.com/AkashHiremath856/Kannada-Character-Recoginition/blob/main/Samples/photo_6060121455506601961_w.jpg">
-
+<img src="https://github.com/AkashHiremath856/Kannada-Character-Recoginition/blob/main/Samples/aa.jpg">
+<img src="https://github.com/AkashHiremath856/Kannada-Character-Recoginition/blob/main/Samples/kaa.jpg">
+<img src="https://github.com/AkashHiremath856/Kannada-Character-Recoginition/blob/main/Samples/num.jpg">
 <p>
 Kannada OCR (Optical Character Recognition) with ML (Machine Learning) classification algorithm involves training a machine learning model to recognize and classify Kannada characters from scanned or digital images.
 
