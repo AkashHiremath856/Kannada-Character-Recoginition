@@ -1,17 +1,20 @@
 import numpy as np
 import streamlit as st
-from skimage.io import imread, imshow
+from skimage.io import imread
 from skimage.transform import resize
 import pickle
-from streamlit_drawable_canvas import st_canvas
 import webbrowser as wb
-import os
 
-model1 = pickle.load(open('Models/KCR(LR).pkl', 'rb'))  # LogisticRegression
-model2 = pickle.load(open('Models/KCR(RF).pkl', 'rb'))  # RandomForest
+model1 = pickle.load(open('Models/KCRaa.pkl', 'rb'))  # LogisticRegression
+model2 = pickle.load(open('Models/KCRkaa.pkl', 'rb'))
+model3 = pickle.load(open('Models/KCRnum.pkl', 'rb'))
 
-characters_list = ['ಅ', 'ಆ', 'ಇ', 'ಈ', 'ಉ',
-                   'ಊ', 'ಋ', 'ಎ', 'ಏ', 'ಐ', 'ಒ', 'ಓ', 'ಔ', 'ಅಂ', 'ಅಃ']
+characters_list_1 = ['ಅ', 'ಆ', 'ಇ', 'ಈ', 'ಉ',
+                     'ಊ', 'ಋ', 'ಎ', 'ಏ', 'ಐ', 'ಒ', 'ಓ', 'ಔ', 'ಅಂ', 'ಅಃ']
+characters_list_2 = {'17': 'ಕ್', '18': 'ಕ', '19': 'ಕಾ', '20': 'ಕಿ',
+                     '21': 'ಕೀ', '22': 'ಕು', '23': 'ಕೂ', '24': 'ಕೃ', '25': 'ಕೈ', '26': 'ಕೆ', '27': 'ಕೇ', '28': 'ಕೈ', '29': 'ಕೊ', '30': 'ಕೋ', '31': 'ಕೌ', '32': 'ಕಂ', '33': 'ಕಃ'}
+characters_list_3 = {'648': '೦', '649': '೧', '650': '೨',
+                     '651': '೩', '652': '೪', '653': '೫', '654': '೬', '655': '೭', '656': '೮', '657': '೯'}
 
 
 def tranform_image(img):
@@ -23,60 +26,83 @@ def tranform_image(img):
 
 
 # --------------UI Beginning------------
-st.title('Kannada Character Recoginition')
-
 # SideBar
 
 side_bar = st.sidebar.radio(
-    'Select Input Mode', ['Image Picker', 'Canvas(Beta)', 'About'])
+    'Select Characters', ['Characters(ಅ-ಅಃ)', 'Characters(ಕ-ಕಃ)', 'Characters(೦-೯)', 'About'])
 
 
-# Image Picker
-
+# page 1
 try:
-    if side_bar == 'Image Picker':
-        st.title('Pick a Image')
+    if side_bar == 'Characters(ಅ-ಅಃ)':
+        st.title('Kannada Character Recoginition (ಅ-ಅಃ)')
+        st.header('Pick a Image (from test_img_aa)')
         img_name = st.file_uploader('Select Image')
         try:
-            st.image(f'test_img/{img_name.name}')
-            img_ = imread(f'test_img/{img_name.name}')
+            st.image(f'test_img_aa/{img_name.name}')
+            img_ = imread(f'test_img_aa/{img_name.name}')
         except:
             st.image(f'test_img/test_img/{img_name.name}')
             img_ = imread(f'test_img/test_img/{img_name.name}')
         # Predict Button
-        if st.button('Predict Class'):
+        if st.button('Predict Character'):
             try:
                 # LR
                 res1 = (model1.predict(tranform_image(img_)))
-                st.header(f'Character is {characters_list[res1[0]-1]} by LR')
-                # RF
-                res2 = (model1.predict(tranform_image(img_)))
-                st.header(f'Character is {characters_list[res2[0]-1]} by RF')
-
+                st.header(
+                    f'Predicted Character is {characters_list_1[res1[0]-1]}')
             except:
                 st.info('Please try again.')
 except:
     pass
 
-if side_bar == 'Canvas(Beta)':
-    #   Canvas
-    with st.form('Canvas'):
-        st.text('Note : Test Release Version')
-        canvas_result = st_canvas(background_color='white',
-                                  width=400, height=200, stroke_width=15)
+# page 2
+if side_bar == 'Characters(ಕ-ಕಃ)':
+    st.title('Kannada Character Recoginition (ಕ-ಕಃ)')
+    st.header('Pick a Image (from test_img_ka)')
+    img_name = st.file_uploader('Select Image')
+    try:
+        st.image(f'test_img_ka/{img_name.name}')
+        img_ = imread(f'test_img_ka/{img_name.name}')
+    except:
+        st.image(f'test_img/test_img/{img_name.name}')
+        img_ = imread(f'test_img/test_img/{img_name.name}')
+    # Predict Button
+    if st.button('Predict Character'):
+        try:
+            # LR
+            res2 = (model2.predict(tranform_image(img_)))[0]
+            res2 = str(res2)
+            st.header(
+                f'Character is {characters_list_2[res2]}')
+        except:
+            st.info('Please try again.')
 
+
+# page 3
+try:
+    if side_bar == 'Characters(೦-೯)':
+        st.title('Kannada Character Recoginition (೦-೯)')
+        st.title('Pick a Image (from test_img_num)')
+        img_name = st.file_uploader('Select Image')
+        try:
+            st.image(f'test_img_num/{img_name.name}')
+            img_ = imread(f'test_img_num/{img_name.name}')
+        except:
+            st.image(f'test_img/test_img/{img_name.name}')
+            img_ = imread(f'test_img/test_img/{img_name.name}')
         # Predict Button
-        if st.form_submit_button('Predict Class'):
+        if st.button('Predict Character'):
             try:
                 # LR
-                res1 = (model1.predict(tranform_image(canvas_result.image_data)))
-                st.header(f'Character is {characters_list[res1[0]-1]} by LR')
-                # RF
-                res2 = (model1.predict(tranform_image(canvas_result.image_data)))
-                st.header(f'Character is {characters_list[res2[0]-1]} by RF')
-
+                res3 = (model3.predict(tranform_image(img_)))[0]
+                res3 = str(res3)
+                st.header(
+                    f'Predicted Character is {characters_list_3[res3]}')
             except:
                 st.info('Please try again.')
+except:
+    pass
 
 # About
 if side_bar == 'About':
